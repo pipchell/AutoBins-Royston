@@ -1,107 +1,128 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Bin Collections - Royston</title>
-<style>
-    body {
-        background: #000;
-        color: white;
-        font-family: Arial, sans-serif;
-        padding: 20px;
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Bin Collections - Royston</title>
+  <style>
+    @font-face{
+      font-family:'LeagueSpartan';
+      src:url('LeagueSpartan-Bold.woff2') format('woff2'),
+          url('LeagueSpartan-Bold.woff') format('woff');
+      font-weight:700;
     }
-    h1 { text-align: center; margin-bottom: 30px; }
-    .bin {
-        background: #111;
-        padding: 20px;
-        margin-bottom: 20px;
-        border-radius: 10px;
-        border: 1px solid #333;
+    body{
+      margin:0;
+      background:#000;
+      color:#17D860;
+      font-family:'LeagueSpartan', Arial, Helvetica, sans-serif;
+      padding:20px;
     }
-    .today { color: #17d860; font-weight: bold; }
-    .tomorrow { color: #4db6ff; font-weight: bold; }
-</style>
+    .logo{
+      width:120px;
+      margin-bottom:20px;
+    }
+    .box{
+      background:#0a0a0a;
+      padding:20px;
+      border-radius:10px;
+      border:1px solid #17D86033;
+      margin-bottom:20px;
+    }
+    h1{color:#17D860;margin-top:0;font-family:'LeagueSpartan';}
+    .day-title{font-size:22px;margin-bottom:10px;color:#17D860;font-family:'LeagueSpartan'}
+    .bin-item{padding:10px 0;border-bottom:1px solid #17D86022;font-size:18px}
+    .bin-item:last-child{border-bottom:none}
+  </style>
 </head>
 <body>
+<img src="logo2.png" alt="Logo" class="logo">
 
 <h1>Bin Collections - Royston</h1>
-<div id="output"></div>
+
+<div class="box">
+  <div class="day-title">Today</div>
+  <div id="todayList">Loading...</div>
+</div>
+
+<div class="box">
+  <div class="day-title">Tomorrow</div>
+  <div id="tomorrowList">Loading...</div>
+</div>
 
 <script>
-    // --- Utility Functions ---
-    function formatDate(d) {
-        return d.toLocaleDateString("en-GB", {
-            weekday: "long",
-            day: "2-digit",
-            month: "long",
-            year: "numeric"
-        });
-    }
+const MS_DAY = 86400000;
+function toUTCDate(y,m,d){return new Date(Date.UTC(y,m-1,d,12));}
 
-    function addDays(date, days) {
-        const d = new Date(date);
-        d.setDate(d.getDate() + days);
-        return d;
-    }
+const bins = [
+  {name:'Non-Recyclable Waste', start:toUTCDate(2025,11,17), interval:3},
+  {name:'Food Waste', start:toUTCDate(2025,11,17), interval:1},
+  {name:'Mixed Recycling', start:toUTCDate(2025,11,24), interval:3},
+  {name:'Garden Waste', start:toUTCDate(2025,11,24), interval:2},
+  {name:'Cardboard & Paper', start:toUTCDate(2025,12,1), interval:3}
+];
 
-    function nextCycle(start, cycleDays, today) {
-        let d = new Date(start);
-        while (d < today) d = addDays(d, cycleDays);
-        return d;
-    }
+function nextMonday(d){
+  const day = d.getUTCDay();
+  if(day === 1) return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), 12));
+  const diff = (1 - day + 7) % 7;
+  return new Date(d.getTime() + diff*MS_DAY);
+}
 
-    // --- Today (auto) ---
-    const today = new Date(); // auto-updates every day
-    const tomorrow = addDays(today, 1);
+function isCollection(bin, date){
+  if(date < bin.start) return false;
+  const weeks = Math.round((date - bin.start)/ (MS_DAY*7));
+  return weeks % bin.interval === 0;
+}
 
-    // --- Official Starting Points from Council ---
-    const cycles = {
-        nonRecyclable: {
-            name: "Non-Recyclable Waste (Purple Lid)",
-            start: new Date("2025-11-17"),
-            cycle: 21
-        },
-        food: {
-            name: "Food Waste (Brown Caddy)",
-            start: new Date("2025-11-17"),
-            cycle: 7
-        },
-        mixed: {
-            name: "Mixed Recycling (Black Lid)",
-            start: new Date("2025-11-24"),
-            cycle: 21
-        },
-        garden: {
-            name: "Garden Waste (Brown Lid)",
-            start: new Date("2025-11-24"),
-            cycle: 14
-        },
-        paper: {
-            name: "Cardboard & Paper (Blue Lid)",
-            start: new Date("2025-12-01"),
-            cycle: 21
-        }
-    };
+function listFor(date){
+  return bins.filter(b=>isCollection(b,date)).map(b=>`<div class='bin-item'>${b.name}</div>`).join('') || '<div class="bin-item">No bins</div>';
+}
 
-    // --- Render Output ---
-    const output = document.getElementById("output");
+function run(){
+  const now = new Date();
+  now.setUTCHours(12,0,0,0);
 
-    for (const key in cycles) {
-        const bin = cycles[key];
-        const next = nextCycle(bin.start, bin.cycle, today);
+  const tomorrowDate = new Date(now.getTime() + MS_DAY);
+  tomorrowDate.setUTCHours(12,0,0,0);
 
-        let label = "";
-        if (formatDate(next) === formatDate(today)) label = " <span class='today'>(Today)</span>";
-        if (formatDate(next) === formatDate(tomorrow)) label = " <span class='tomorrow'>(Tomorrow)</span>";
+  const todayIsMonday = now.getUTCDay() === 1;
+  const tomorrowIsMonday = tomorrowDate.getUTCDay() === 1;
 
-        output.innerHTML += `
-            <div class="bin">
-                <h2>${bin.name}</h2>
-                <p><strong>Next collection:</strong> ${formatDate(next)}${label}</p>
-                <p><strong>Collection cycle:</strong> Every ${bin.cycle === 7 ? "Monday" : (bin.cycle === 14 ? "Monday fortnightly" : "3rd Monday")}</p>
-            </div>
-        `;
-    }
+  document.getElementById('todayList').innerHTML = todayIsMonday ? listFor(now) : '<div class="bin-item">No bins</div>';
+  document.getElementById('tomorrowList').innerHTML = tomorrowIsMonday ? listFor(tomorrowDate) : '<div class="bin-item">No bins</div>';
+}
+
+run();
+</script>
+
+<div class="box">
+  <div class="day-title">All Bins & Next Collection</div>
+  <div id="allBinsList">Loading...</div>
+</div>
+
+<script>
+// extend run() to fill all bins list
+function nextDateFor(bin){
+  const now = new Date();
+  let d = nextMonday(now);
+  for(let i=0;i<20;i++){
+    if(isCollection(bin, d)) return d;
+    d = new Date(d.getTime() + 7*MS_DAY);
+  }
+  return null;
+}
+
+function loadAllBins(){
+  const html = bins.map(b=>{
+    const nd = nextDateFor(b);
+    const fd = nd ? nd.toLocaleDateString('en-GB',{weekday:'short',day:'2-digit',month:'short'}) : 'N/A';
+    return `<div class='bin-item'><strong>${b.name}</strong><br>Cycle: ${b.interval===1? 'Every Monday' : b.interval===2? 'Every Monday fortnightly' : 'Every 3rd Monday'}<br>Next: $ ${fd}</div>`;
+  }).join('');
+  document.getElementById('allBinsList').innerHTML = html;
+}
+
+loadAllBins();
 </script>
 
 </body>
