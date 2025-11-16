@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Bins - Royston</title>
+<link rel="icon" type="image/png" href="logo2.png">
+<style>
+    @font-face {
+        font-family: 'LeagueSpartan';
+        src: url('LeagueSpartan-Bold.woff2') format('woff2'),
+             url('LeagueSpartan-Bold.woff') format('woff');
+        font-weight: 700;
+    }
+
+    body {
+        background: #000;
+        color: white;
+        font-family: Arial, sans-serif;
+        padding: 10px;
+    }
+
+    h1 {
+        text-align: center;
+        font-family:'LeagueSpartan';
+        font-weight:700;
+        margin-bottom: 20px;
+        color:#17D860;
+        font-size: 28px;
+    }
+
+    .bin {
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 12px;
+        border: 5px solid #333;
+        font-family:'LeagueSpartan';
+    }
+
+    .purple { background:#2b004d; }
+    .brown { background:#3b2400; }
+    .black { background:#111; }
+    .brown2 { background:#4a2e00; }
+    .blue { background:#003d7d; }
+
+    .today, .tomorrow { color: #4db6ff; font-weight:bold; }
+</style>
+</head>
+<body>
+
+<h1>Bin Collections</h1>
+<div id="output"></div>
+
+<script>
+    function formatDate(d) {
+        return d.toLocaleDateString("en-GB", {
+            weekday: "short",
+            day: "2-digit",
+            month: "short"
+        });
+    }
+
+    function addDays(date, days) { const d = new Date(date); d.setDate(d.getDate() + days); return d; }
+    function nextCycle(start, cycleDays, today) {
+        let d = new Date(start);
+        while (d < today) d = addDays(d, cycleDays);
+        return d;
+    }
+
+    const today = new Date();
+    const tomorrow = addDays(today, 1);
+
+    const cycles = {
+        nonRecyclable: { name: "Purple Lid", start: new Date("2025-11-17"), cycle: 21, color:"purple" },
+        food: { name: "Food Caddy", start: new Date("2025-11-17"), cycle: 7, color:"brown" },
+        mixed: { name: "Black Lid", start: new Date("2025-11-24"), cycle: 21, color:"black" },
+        garden: { name: "Garden Waste", start: new Date("2025-11-24"), cycle: 14, color:"brown2" },
+        paper: { name: "Blue Lid", start: new Date("2025-12-01"), cycle: 21, color:"blue" }
+    };
+
+    const output = document.getElementById("output");
+
+    for (const key in cycles) {
+        const bin = cycles[key];
+        const next = nextCycle(bin.start, bin.cycle, today);
+
+        let labelHTML = "";
+        let isToday = formatDate(next) === formatDate(today);
+        let isTomorrow = formatDate(next) === formatDate(tomorrow);
+        if (isToday) labelHTML = " <span class='today'>(Today)</span>";
+        if (isTomorrow) labelHTML = " <span class='tomorrow'>(Tomorrow)</span>";
+
+        let borderStyle = "5px solid #333";
+        if (isToday || isTomorrow) {
+            borderStyle = '5px solid white';
+        }
+
+        output.innerHTML += `
+            <div class="bin ${bin.color}" style="border:${borderStyle}">
+                <h2>${bin.name}</h2>
+                <p><strong>${formatDate(next)}</strong>${labelHTML}</p>
+            </div>
+        `;
+    }
+</script>
+
+<footer style="text-align:center;margin-top:30px;font-family:'LeagueSpartan';font-size:16px;">Pip Chell</footer>
+
+</body>
+</html>
