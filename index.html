@@ -18,6 +18,7 @@
         color: white;
         font-family: Arial, sans-serif;
         padding: 20px;
+        margin: 0;
     }
 
     h1 { 
@@ -25,15 +26,16 @@
         margin-bottom: 30px; 
         font-family:'LeagueSpartan'; 
         font-weight:700; 
+        color:#17D860;
     }
 
-    .bin { 
+    .bin {
         padding: 30px; 
         margin-bottom: 30px; 
         border-radius: 10px; 
         border: 6px solid #333; 
         font-family:'LeagueSpartan'; 
-        color:white; 
+        color:white;
     }
 
     .purple { background:#2b004d; }
@@ -51,13 +53,11 @@
         font-size:18px;
     }
 
-    /* MOBILE: hide all content and show black screen */
-    @media (max-width: 768px) {
-        body * {
-            display: none !important;
-        }
+    /* Mobile zoom */
+    @media screen and (max-width: 768px) {
         body {
-            background: #000;
+            transform: scale(1.3);
+            transform-origin: top center;
         }
     }
 </style>
@@ -68,61 +68,61 @@
 <div id="output"></div>
 
 <script>
-    function formatDate(d) {
-        return d.toLocaleDateString("en-GB", {
-            weekday: "long",
-            day: "2-digit",
-            month: "long",
-            year: "numeric"
-        });
+function formatDate(d) {
+    return d.toLocaleDateString("en-GB", {
+        weekday: "long",
+        day: "2-digit",
+        month: "long",
+        year: "numeric"
+    });
+}
+
+function addDays(date, days) { const d = new Date(date); d.setDate(d.getDate() + days); return d; }
+function nextCycle(start, cycleDays, today) {
+    let d = new Date(start);
+    while (d < today) d = addDays(d, cycleDays);
+    return d;
+}
+
+const today = new Date();
+const tomorrow = addDays(today, 1);
+
+const cycles = {
+    nonRecyclable: { name: "Non-Recyclable Waste (Purple Lid)", start: new Date("2025-11-17"), cycle: 21, color:"purple" },
+    food: { name: "Food Waste (Brown Caddy)", start: new Date("2025-11-17"), cycle: 7, color:"brown" },
+    mixed: { name: "Mixed Recycling (Black Lid)", start: new Date("2025-11-24"), cycle: 21, color:"black" },
+    garden: { name: "Garden Waste (Brown Lid)", start: new Date("2025-11-24"), cycle: 14, color:"brown2" },
+    paper: { name: "Cardboard & Paper (Blue Lid)", start: new Date("2025-12-01"), cycle: 21, color:"blue" }
+};
+
+const output = document.getElementById("output");
+
+for (const key in cycles) {
+    const bin = cycles[key];
+    const next = nextCycle(bin.start, bin.cycle, today);
+
+    let labelHTML = "";
+    let isToday = formatDate(next) === formatDate(today);
+    let isTomorrow = formatDate(next) === formatDate(tomorrow);
+    if (isToday) labelHTML = " <span class='today'>(Today)</span>";
+    if (isTomorrow) labelHTML = " <span class='tomorrow'>(Tomorrow)</span>";
+
+    let borderStyle = "6px solid #333";
+    if (isToday || isTomorrow) {
+        borderStyle = '6px solid white';
     }
 
-    function addDays(date, days) { const d = new Date(date); d.setDate(d.getDate() + days); return d; }
-    function nextCycle(start, cycleDays, today) {
-        let d = new Date(start);
-        while (d < today) d = addDays(d, cycleDays);
-        return d;
-    }
-
-    const today = new Date();
-    const tomorrow = addDays(today, 1);
-
-    const cycles = {
-        nonRecyclable: { name: "Non-Recyclable Waste (Purple Lid)", start: new Date("2025-11-17"), cycle: 21, color:"purple" },
-        food: { name: "Food Waste (Brown Caddy)", start: new Date("2025-11-17"), cycle: 7, color:"brown" },
-        mixed: { name: "Mixed Recycling (Black Lid)", start: new Date("2025-11-24"), cycle: 21, color:"black" },
-        garden: { name: "Garden Waste (Brown Lid)", start: new Date("2025-11-24"), cycle: 14, color:"brown2" },
-        paper: { name: "Cardboard & Paper (Blue Lid)", start: new Date("2025-12-01"), cycle: 21, color:"blue" }
-    };
-
-    const output = document.getElementById("output");
-
-    for (const key in cycles) {
-        const bin = cycles[key];
-        const next = nextCycle(bin.start, bin.cycle, today);
-
-        let labelHTML = "";
-        let isToday = formatDate(next) === formatDate(today);
-        let isTomorrow = formatDate(next) === formatDate(tomorrow);
-        if (isToday) labelHTML = " <span class='today'>(Today)</span>";
-        if (isTomorrow) labelHTML = " <span class='tomorrow'>(Tomorrow)</span>";
-
-        let borderStyle = "6px solid #333";
-        if (isToday || isTomorrow) {
-            borderStyle = '6px solid white';
-        }
-
-        output.innerHTML += `
-            <div class="bin ${bin.color}" style="border:${borderStyle}">
-                <h2>${bin.name}</h2>
-                <p><strong>Next collection:</strong> ${formatDate(next)}${labelHTML}</p>
-                <p><strong>Collection cycle:</strong> Every ${bin.cycle === 7 ? "Monday" : (bin.cycle === 14 ? "Monday fortnightly" : "3rd Monday")}</p>
-            </div>
-        `;
-    }
+    output.innerHTML += `
+        <div class="bin ${bin.color}" style="border:${borderStyle}">
+            <h2>${bin.name}</h2>
+            <p><strong>Next collection:</strong> ${formatDate(next)}${labelHTML}</p>
+            <p><strong>Collection cycle:</strong> Every ${bin.cycle === 7 ? "Monday" : (bin.cycle === 14 ? "Monday fortnightly" : "3rd Monday")}</p>
+        </div>
+    `;
+}
 </script>
 
-<footer>Pip Chell - V6</footer>
+<footer>Pip Chell - V4</footer>
 
 </body>
 </html>
