@@ -1,178 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<title>Bin Collections - Royston</title>
-<link rel="icon" type="image/png" href="logo2.png">
-
-<style>
-    @font-face {
-        font-family: 'LeagueSpartan';
-        src: url('LeagueSpartan-Bold.woff2') format('woff2'),
-             url('LeagueSpartan-Bold.woff') format('woff');
-        font-weight: 700;
-    }
-
-    body {
-        background: #000;
-        color: white;
-        font-family: Arial, sans-serif;
-        padding: 20px;
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    /* Title */
-    h1 {
-        text-align: center;
-        margin-bottom: 35px;
-        font-family:'LeagueSpartan';
-        font-weight:700;
-        color:#17d860;
-        font-size: 2.5rem;
-    }
-
-    /* Main container */
-    #output {
-        width: 100%;
-        max-width: 850px; /* Desktop centred */
-    }
-
-    /* Bin boxes default (desktop) */
-    .bin {
-        padding: 30px;
-        margin-bottom: 35px;
-        border-radius: 12px;
-        border: 6px solid #333;
-        font-family:'LeagueSpartan';
-        color:white;
-    }
-
-    /* Colours */
-    .purple { background:#2b004d; }
-    .brown  { background:#3b2400; }
-    .black  { background:#111; }
-    .brown2 { background:#4a2e00; }
-    .blue   { background:#003d7d; }
-
-    h2 {
-        margin: 0 0 10px;
-        font-size: 1.6rem;
-    }
-
-    .bin p {
-        margin: 8px 0;
-        font-size: 1.15rem;
-        line-height: 1.5;
-    }
-
-    /* Today / Tomorrow tags */
-    .today, .tomorrow {
-        color: #4db6ff;
-        font-weight: bold;
-    }
-
-    footer {
-        text-align:center;
-        margin-top:50px;
-        font-family:'LeagueSpartan';
-        font-size:18px;
-    }
-
-    /* ------------------------------------------------------------ */
-    /* MOBILE MODE (auto when screen width < 600px)                 */
-    /* ------------------------------------------------------------ */
-    @media (max-width: 600px) {
-
-        h1 {
-            font-size: 2rem;
-            margin-bottom: 25px;
-        }
-
-        #output {
-            width: 100%;
-        }
-
-        .bin {
-            padding: 22px;
-            border-width: 5px;
-            margin-bottom: 25px;
-        }
-
-        .bin h2 {
-            font-size: 1.35rem;
-        }
-
-        .bin p {
-            font-size: 1.05rem;
-            margin: 6px 0;
-        }
-    }
-</style>
-</head>
-
-<body>
-
-<h1>Bin Collections - Royston</h1>
-<div id="output"></div>
-
+<title>Loading…</title>
 <script>
-    function formatDate(d) {
-        return d.toLocaleDateString("en-GB", {
-            weekday: "long",
-            day: "2-digit",
-            month: "long",
-            year: "numeric"
-        });
-    }
-
-    function addDays(date, days) { const d = new Date(date); d.setDate(d.getDate() + days); return d; }
-    function nextCycle(start, cycleDays, today) {
-        let d = new Date(start);
-        while (d < today) d = addDays(d, cycleDays);
-        return d;
-    }
-
-    const today = new Date();
-    const tomorrow = addDays(today, 1);
-
-    const cycles = {
-        nonRecyclable: { name: "Non-Recyclable Waste (Purple Lid)", start: new Date("2025-11-17"), cycle: 21, color:"purple" },
-        food: { name: "Food Waste (Brown Caddy)", start: new Date("2025-11-17"), cycle: 7, color:"brown" },
-        mixed: { name: "Mixed Recycling (Black Lid)", start: new Date("2025-11-24"), cycle: 21, color:"black" },
-        garden: { name: "Garden Waste (Brown Lid)", start: new Date("2025-11-24"), cycle: 14, color:"brown2" },
-        paper: { name: "Cardboard & Paper (Blue Lid)", start: new Date("2025-12-01"), cycle: 21, color:"blue" }
-    };
-
-    const output = document.getElementById("output");
-
-    for (const key in cycles) {
-        const bin = cycles[key];
-        const next = nextCycle(bin.start, bin.cycle, today);
-
-        let isToday = formatDate(next) === formatDate(today);
-        let isTomorrow = formatDate(next) === formatDate(tomorrow);
-
-        let labelHTML = "";
-        if (isToday) labelHTML = " <span class='today'>(Today)</span>";
-        if (isTomorrow) labelHTML = " <span class='tomorrow'>(Tomorrow)</span>";
-
-        let borderStyle = "6px solid #333";
-        if (isToday || isTomorrow) borderStyle = "6px solid white";
-
-        output.innerHTML += `
-            <div class="bin ${bin.color}" style="border:${borderStyle}">
-                <h2>${bin.name}</h2>
-                <p><strong>Next collection:</strong> ${formatDate(next)}${labelHTML}</p>
-                <p><strong>Collection cycle:</strong> Every ${bin.cycle === 7 ? "Monday" : (bin.cycle === 14 ? "Monday fortnightly" : "3rd Monday")}</p>
-            </div>
-        `;
+    // Auto redirect based on screen width
+    if (window.innerWidth <= 700) {
+        window.location.href = "mobile.html";
+    } else {
+        window.location.href = "desktop.html";
     }
 </script>
-
-<footer>Pip Chell - V4</footer>
-
+</head>
+<body style="background:black;color:white;font-family:sans-serif;text-align:center;padding-top:40px;">
+Redirecting…
 </body>
 </html>
