@@ -2,8 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Bins - Royston</title>
 <link rel="icon" type="image/png" href="logo2.png">
+
 <style>
     @font-face {
         font-family: 'LeagueSpartan';
@@ -16,52 +18,54 @@
         background: #000;
         color: white;
         font-family: Arial, sans-serif;
-        padding: 20px;
+        padding: 24px;
     }
 
-    /* MUCH BIGGER TITLE */
+    /* MOBILE: Large title */
     h1 {
         text-align: center;
         font-family:'LeagueSpartan';
         font-weight:700;
-        margin-bottom: 35px;
+        margin-bottom: 40px;
         color:#17D860;
-        font-size: 40px;
+        font-size: 46px;
     }
 
-    /* MUCH BIGGER BIN BOXES */
+    /* MOBILE: Big bin boxes */
     .bin {
-        padding: 35px;
-        margin-bottom: 35px;
-        border-radius: 16px;
-        border: 8px solid #333;
+        padding: 40px;
+        margin-bottom: 40px;
+        border-radius: 20px;
+        border: 10px solid #333;
         font-family:'LeagueSpartan';
-        font-size: 26px;
-        line-height: 1.5;
+        font-size: 30px;
+        line-height: 1.6;
     }
 
-    /* Bigger bin colours */
+    /* Bin colours */
     .purple { background:#2b004d; }
     .brown { background:#3b2400; }
     .black { background:#111; }
     .brown2 { background:#4a2e00; }
     .blue { background:#003d7d; }
 
-    /* Bigger "today" and "tomorrow" labels */
+    /* Mobile: big "today" and "tomorrow" tags */
     .today, .tomorrow { 
         color: #4db6ff; 
-        font-weight:bold;
-        font-size: 28px;
+        font-weight: bold;
+        font-size: 32px;
     }
 
-    /* Bigger footer */
+    /* Footer */
     footer {
-        margin-top: 50px;
+        margin-top: 60px;
         text-align: center;
         font-family:'LeagueSpartan';
-        font-size: 22px;
+        font-size: 26px;
+        color: #777;
     }
 </style>
+
 </head>
 <body>
 
@@ -77,7 +81,12 @@
         });
     }
 
-    function addDays(date, days) { const d = new Date(date); d.setDate(d.getDate() + days); return d; }
+    function addDays(date, days) {
+        const d = new Date(date);
+        d.setDate(d.getDate() + days);
+        return d;
+    }
+
     function nextCycle(start, cycleDays, today) {
         let d = new Date(start);
         while (d < today) d = addDays(d, cycleDays);
@@ -104,18 +113,19 @@
         let labelHTML = "";
         let isToday = formatDate(next) === formatDate(today);
         let isTomorrow = formatDate(next) === formatDate(tomorrow);
+
         if (isToday) labelHTML = " <span class='today'>(Today)</span>";
         if (isTomorrow) labelHTML = " <span class='tomorrow'>(Tomorrow)</span>";
 
-        let borderStyle = "8px solid #333";
+        let borderStyle = "10px solid #333";
         if (isToday || isTomorrow) {
-            borderStyle = '8px solid white';
+            borderStyle = "10px solid white";
         }
 
         output.innerHTML += `
             <div class="bin ${bin.color}" style="border:${borderStyle}">
-                <h2 style="font-size:32px;margin-bottom:15px;">${bin.name}</h2>
-                <p style="font-size:26px;"><strong>${formatDate(next)}</strong>${labelHTML}</p>
+                <h2 style="font-size:34px;margin-bottom:18px;">${bin.name}</h2>
+                <p style="font-size:30px;"><strong>${formatDate(next)}</strong>${labelHTML}</p>
             </div>
         `;
     }
