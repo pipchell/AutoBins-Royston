@@ -1,6 +1,9 @@
 # **Auto Bins**
 <ins>A simple, efficient web tool for viewing upcoming bin collection schedules in Royston.</ins> The project focuses on clarity, mobile accessibility, and ease of maintenance while avoiding unnecessary complexity.
 
+## Current version:
+### 4.3
+
 ### Overview:
 Bins – Royston is a minimal web application that displays upcoming bin collection days for households in the Royston area. The goal is to provide a fast-loading, easy-to-read page that works consistently across devices. The site is built with plain HTML, CSS, and lightweight JavaScript where necessary. No frameworks or external libraries are used.
 
