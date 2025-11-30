@@ -36,13 +36,6 @@ The project uses proportional zoom via CSS transforms. This keeps the desktop la
 
 Change the value to adjust zoom.
 
-### Editing Bin Dates:
-
-<div class="box green">
-    <h2>Green Bin</h2>
-    <p>Next collection: Monday</p>
-</div>
-
 ### Adjusting Zoom Level:
 
 Modify:
