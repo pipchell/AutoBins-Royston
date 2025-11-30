@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bin Collections - Royston</title>
 <link rel="icon" type="image/png" href="logo2.png">
+
 <style>
 @font-face {
     font-family: 'LeagueSpartan';
@@ -26,8 +27,8 @@ body {
 }
 
 .wrapper {
-    max-width: 900px; /* desktop max width */
-    margin: 0 auto;   /* center horizontally */
+    max-width: 900px;
+    margin: 0 auto;
     padding: 20px;
 }
 
@@ -69,14 +70,13 @@ footer {
     font-size:18px;
 }
 
-/* Mobile adjustments */
 @media screen and (max-width: 768px) {
     .wrapper {
         padding: 15px;
     }
 
     h1 {
-        font-size: 44px; /* slightly bigger for mobile */
+        font-size: 44px;
     }
 
     .bin {
@@ -98,16 +98,19 @@ footer {
 
 <div class="wrapper">
     <h1>Bin Collections - Royston</h1>
+
     <div id="output"></div>
-    <footer>Pip Chell - V4.5</footer>
+
+    <footer>Pip Chell - V4.6</footer>
+
     <h6 style="
-    text-align:center;
-    font-family:'LeagueSpartan', sans-serif;
-    font-weight:700;
-    margin-top:20px;
-">
-    Info Only Accurate For Royston, Hertfordshire. This Is Not An Official Service.
-</h6>
+        text-align:center;
+        font-family:'LeagueSpartan', sans-serif;
+        font-weight:700;
+        margin-top:20px;
+    ">
+        Info Only Accurate For Royston, Hertfordshire. This Is Not An Official Service.
+    </h6>
 </div>
 
 <script>
@@ -140,13 +143,23 @@ const cycles = {
 
 const output = document.getElementById("output");
 
-for (const key in cycles) {
-    const bin = cycles[key];
-    const next = nextCycle(bin.start, bin.cycle, today);
+// Convert object → array so we can sort
+let binsArray = Object.values(cycles).map(bin => {
+    bin.nextDate = nextCycle(bin.start, bin.cycle, today);
+    return bin;
+});
+
+// Sort by next collection date (earliest first)
+binsArray.sort((a, b) => a.nextDate - b.nextDate);
+
+// Output sorted list
+binsArray.forEach(bin => {
+    let next = bin.nextDate;
 
     let labelHTML = "";
     let isToday = formatDate(next) === formatDate(today);
     let isTomorrow = formatDate(next) === formatDate(tomorrow);
+
     if (isToday) labelHTML = " <span class='today'>(Today)</span>";
     if (isTomorrow) labelHTML = " <span class='tomorrow'>(Tomorrow)</span>";
 
@@ -157,10 +170,14 @@ for (const key in cycles) {
         <div class="bin ${bin.color}" style="border:${borderStyle}">
             <h2>${bin.name}</h2>
             <p><strong>Next collection:</strong> ${formatDate(next)}${labelHTML}</p>
-            <p><strong>Collection cycle:</strong> Every ${bin.cycle === 7 ? "Monday" : (bin.cycle === 14 ? "Monday fortnightly" : "3rd Monday")}</p>
+            <p><strong>Collection cycle:</strong> Every ${
+                bin.cycle === 7 ? "Monday" : 
+                bin.cycle === 14 ? "Monday fortnightly" : 
+                "3rd Monday"
+            }</p>
         </div>
     `;
-}
+});
 </script>
 
 </body>
