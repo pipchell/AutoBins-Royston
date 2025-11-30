@@ -1,10 +1,10 @@
-### **Auto Bins**
+# **Auto Bins**
 <ins>A simple, efficient web tool for viewing upcoming bin collection schedules in Royston.</ins> The project focuses on clarity, mobile accessibility, and ease of maintenance while avoiding unnecessary complexity.
 
-# Overview:
+### Overview:
 Bins – Royston is a minimal web application that displays upcoming bin collection days for households in the Royston area. The goal is to provide a fast-loading, easy-to-read page that works consistently across devices. The site is built with plain HTML, CSS, and lightweight JavaScript where necessary. No frameworks or external libraries are used.
 
-# Key Features:
+### Key Features:
 - Clean Layout
 - Clear containers display the next collection for each bin type. Information is presented without visual clutter.
 - Mobile-Optimised Scaling
@@ -17,13 +17,13 @@ Bins – Royston is a minimal web application that displays upcoming bin collect
 - Easy Maintenance
 - Bin dates can be updated by editing a single section of the HTML—no databases or APIs required.
 
-## Project Structure:
+### Project Structure:
 /project-root
 │
 ├── index.html   # Main and only file containing layout, styling, and responsive scaling
 └── README.md    # Documentation
 
-# Mobile Scaling:
+### Mobile Scaling:
 
 The project uses proportional zoom via CSS transforms. This keeps the desktop layout intact while enlarging it on mobile:
 
@@ -36,21 +36,21 @@ The project uses proportional zoom via CSS transforms. This keeps the desktop la
 
 Change the value to adjust zoom.
 
-# Editing Bin Dates:
+### Editing Bin Dates:
 
 <div class="box green">
     <h2>Green Bin</h2>
     <p>Next collection: Monday</p>
 </div>
 
-# Adjusting Zoom Level:
+### Adjusting Zoom Level:
 
 Modify:
 transform: scale(1.17);
 
 Lower values reduce zoom. Higher values increase it.
 
-## Why This Project Exists:
+### Why This Project Exists:
 
 # The official bin-collection interface is harder to read quickly, inconsistent across devices, and often cluttered.
 This project improves on that by:
@@ -61,21 +61,21 @@ This project improves on that by:
 - Loading instantly, even on slow connections
 - The design principle: simple, readable, fast.
 
-# Potential enhancements:
+### Potential enhancements:
 - Push or email notifications
 - Colorblind-friendly theme option
 - Automatic date rotation logic
 - Export to iCalendar (.ics)
 
-## Contributing:
+# Contributing:
 
-#If contributing:
+### If contributing:
 - Keep the single-file structure
 - Avoid adding unnecessary dependencies
 - Preserve readability and simplicity
 - Verify layout on both mobile and desktop
 
-## License:
+### License:
 
 MIT Licance
 ©Pip Chell 2025
