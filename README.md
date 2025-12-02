@@ -1,5 +1,5 @@
 # **Auto Bins**
-<ins>A simple, efficient web tool for viewing upcoming bin collection schedules in Royston.</ins> The project focuses on clarity, mobile accessibility, and ease of maintenance while avoiding unnecessary complexity.
+<ins>A simple, efficient web tool for viewing upcoming bin collection schedules in Royston.</ins> The project focuses on clarity, mobile accessibility, and ease of maintenance while avoiding unnecessary complexity.<br>
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow)
 
 ## Current version:
