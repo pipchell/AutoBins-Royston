@@ -1,7 +1,9 @@
 # **Auto Bins:**
 <ins>A simple, efficient web tool for viewing upcoming bin collection schedules in Royston.</ins> The project focuses on clarity, mobile accessibility, and ease of maintenance while avoiding unnecessary complexity.<br>
 <br>
-![License: MIT](https://img.shields.io/badge/License-MIT-yellow) ![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live-brightgreen)
+<span><img src="https://img.shields.io/badge/Pages-Live-brightgreen" /></span>
+<span><img src="https://img.shields.io/badge/License-MIT-yellow" /></span>
+
 
 ## Current version:
 ### 4.6 - Now ordered nearest to now &rarr; furthest from now.
