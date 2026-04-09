@@ -58,7 +58,3 @@ Lower values reduce zoom. Higher values increase it.
 - Preserve readability and simplicity
 - Verify layout on both mobile and desktop
 
-### License:
-
-MIT Licance
-©Pip Chell 2025
